@@ -55,14 +55,15 @@ public class UserController {
                      @RequestParam("password") String password){
         String token = username + password;
         AjaxResult ajax;
-        if(redisUtil.hasKey(token)){
-            User user = (User) redisUtil.get(token);
+        if(userService.getUserByName(username) != null){
+            User user = userService.getUserByName(username);
+            redisUtil.set(token, user);
             ajax = AjaxResult.success();
             ajax.put("user_id", user.getId());
             ajax.put("token", token);
         }
         else{
-            ajax = AjaxResult.error("未登录");
+            ajax = AjaxResult.error("用户不存在");
         }
         return ajax;
     }

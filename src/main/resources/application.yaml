@@ -14,13 +14,14 @@ spring:
       max-request-size: 50MB
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/tikfake?characterEncoding=utf-8
-    username: root
-    password: Zcj@119303
+    url: jdbc:mysql://47.115.217.9:3306/tikfake?characterEncoding=utf-8
+    username: infinite
+    password: Zcj119303
   redis:
-    host: 127.0.0.1
+    host: 47.115.217.9
     port: 6379
     database: 0
+    password: Zcj119303
 
 mybatis-plus:
   configuration:
