@@ -18,27 +18,6 @@ public class AjaxResult extends HashMap<String, Object> {
      * */
     public static final String NEXT_TIME = "next_time";
 
-    /** 视频列表 */
-    public static final String VIDEO_LIST = "video_list";
-
-    /** 用户id
-     * 用户注册
-     * 用户登录
-     * */
-    public static final String USER_ID = "user_id";
-
-    /** 用户鉴权token
-     * 用户注册
-     * 用户登录
-     * */
-    public static final String TOKEN = "token";
-
-    /** 多选一且必须只能符合下列其中一组子节点（即XOR，异或关系）
-     * 用户信息
-     * */
-     public static final String USER = "user";
-
-
     /**
      * 初始化一个新创建的 AjaxResult 对象，使其表示一个空消息。
      */
