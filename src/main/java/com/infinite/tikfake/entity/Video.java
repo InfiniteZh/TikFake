@@ -25,4 +25,15 @@ public class Video {
     private Integer commentCount;
     private Boolean isFavorite;
     private String title;
+
+    public Video(Integer userId, User author, String playUrl, String coverUrl, String title){
+        this.userId = userId;
+        this.author = author;
+        this.playUrl = playUrl;
+        this.coverUrl = coverUrl;
+        this.title =title;
+        this.favoriteCount = 0;
+        this.commentCount = 0;
+        this.isFavorite = false;
+    }
 }

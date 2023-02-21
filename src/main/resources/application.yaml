@@ -30,3 +30,9 @@ mybatis-plus:
   global-config:
     db-config:
       id-type: auto #id生成规则：数据库id自增
+
+qiniu:
+  accessKey: CQwDB_qxHOG4oRWM98WtnhINjsInqUDo4qrPdsLB
+  secretKey: 3rqpIliuvCUNnBXoqIpLi1kQp8dlvXF09890_bfn
+  bucket: tikfake
+  domain: http://rqdsogyxa.hd-bkt.clouddn.com

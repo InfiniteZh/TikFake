@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,7 +23,7 @@ public class FeedController {
     VideoService videoService;
     @GetMapping("/feed")
     @ApiOperation("获取视频流")
-    public AjaxResult Feed(){
+    public AjaxResult Feed() {
         List<Video> list = new ArrayList<>();
         list.add(videoService.getVideoDemo());
         AjaxResult ajax = AjaxResult.success();
