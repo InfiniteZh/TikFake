@@ -2,17 +2,17 @@ package com.infinite.tikfake.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @TableName(excludeProperty = "author")
-@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+//@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class Video {
     private Integer id;
     @JsonIgnore
@@ -25,6 +25,10 @@ public class Video {
     private Integer commentCount;
     private Boolean isFavorite;
     private String title;
+    @JsonIgnore
+    private Date createTime;
+    @JsonIgnore
+    private Date updateTime;
 
     public Video(Integer userId, User author, String playUrl, String coverUrl, String title){
         this.userId = userId;

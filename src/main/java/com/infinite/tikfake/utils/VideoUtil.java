@@ -43,6 +43,10 @@ public class VideoUtil {
         return true;
     }
 
+    public String getQiniuURL(String baseUrl){
+        Auth auth = Auth.create(accessKey, secretKey);
+        return auth.privateDownloadUrl(baseUrl);
+    }
 
     public  void saveVideoOnline(MultipartFile data, String keyVideo, String keyImg) {
         // 获取第一帧

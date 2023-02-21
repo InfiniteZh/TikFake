@@ -8,6 +8,7 @@ spring:
   jackson:
     serialization:
       write-dates-as-timestamps: true   # 将 时间 转换为 时间戳
+    property-naming-strategy: SNAKE_CASE
   servlet:
     multipart:
       max-file-size: 20MB   # 提高上传文件的大小
@@ -35,4 +36,4 @@ qiniu:
   accessKey: CQwDB_qxHOG4oRWM98WtnhINjsInqUDo4qrPdsLB
   secretKey: 3rqpIliuvCUNnBXoqIpLi1kQp8dlvXF09890_bfn
   bucket: tikfake
-  domain: http://rqdsogyxa.hd-bkt.clouddn.com
+  domain: http://rqdsogyxa.hd-bkt.clouddn.com/

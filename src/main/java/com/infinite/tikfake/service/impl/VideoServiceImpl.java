@@ -1,5 +1,6 @@
 package com.infinite.tikfake.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.infinite.tikfake.entity.User;
 import com.infinite.tikfake.entity.Video;
 import com.infinite.tikfake.mapper.VideoMapper;
@@ -11,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 
 @Service
@@ -46,5 +49,25 @@ public class VideoServiceImpl implements VideoService {
         User user = userService.getUserByName(username);
         Video video = new Video(user.getId(), user, playUrl, coverUrl, title);
         videoMapper.insert(video);
+    }
+
+    @Override
+    public Video getVideoByTitle(String title) {
+        QueryWrapper<Video> wrapper = new QueryWrapper<>();
+        wrapper.eq("title", title);
+        return videoMapper.selectOne(wrapper);
+    }
+
+    @Override
+    public List<Video> getVideoOrderByCreateTime() {
+        QueryWrapper<Video> wrapper = new QueryWrapper<>();
+        wrapper.orderBy(true, false, "create_time");
+        wrapper.last("limit 30");
+        List<Video> videos = videoMapper.selectList(wrapper);
+        for(Video video : videos){
+            video.setPlayUrl(videoUtil.getQiniuURL(video.getPlayUrl()));
+            video.setCoverUrl(videoUtil.getQiniuURL(video.getCoverUrl()));
+        }
+        return videos;
     }
 }

@@ -25,7 +25,9 @@ public class PublishController {
             return AjaxResult.error("token error");
         }
         AjaxResult ajax;
-
+        if(videoService.getVideoByTitle(title) != null){
+            return AjaxResult.error("请换一个title");
+        }
         videoService.saveVideo(data, token, title);
 
         ajax = AjaxResult.success();
