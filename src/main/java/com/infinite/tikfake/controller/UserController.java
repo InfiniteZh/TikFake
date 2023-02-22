@@ -3,7 +3,6 @@ package com.infinite.tikfake.controller;
 import com.infinite.tikfake.entity.User;
 import com.infinite.tikfake.common.AjaxResult;
 import com.infinite.tikfake.service.UserService;
-import com.infinite.tikfake.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,9 +16,6 @@ public class UserController {
     @GetMapping("user")
     AjaxResult getUserInfo(@RequestParam("user_id") Integer user_id,
                            @RequestParam("token") String token){
-        if(!JwtUtil.verifyTokenOfUser(token)){
-            return AjaxResult.error("token error");
-        }
         User user = userService.getUserById(user_id);
         AjaxResult ajax = AjaxResult.success();
         ajax.put("user", user);

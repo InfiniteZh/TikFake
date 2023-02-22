@@ -30,8 +30,14 @@ public class VideoUtil {
     @Value("${qiniu.bucket}")
     private String bucket;
 
-
-    public  boolean saveVideoLocal(MultipartFile data, String title) throws IOException {
+    /**
+     * 视频存储本地（暂时不用）
+     * @param data  视频数据
+     * @param title 视频标题
+     * @return
+     * @throws IOException
+     */
+    public boolean saveVideoLocal(MultipartFile data, String title) throws IOException {
         //文件上传的地址
         String realPath = ResourceUtils.getURL("classpath:").getPath()+"static/upload/";
         //用于查看路径是否正确
@@ -48,6 +54,14 @@ public class VideoUtil {
         return auth.privateDownloadUrl(baseUrl);
     }
 
+
+
+    /**
+     * 视频存储到七牛云oss
+     * @param data
+     * @param keyVideo
+     * @param keyImg
+     */
     public  void saveVideoOnline(MultipartFile data, String keyVideo, String keyImg) {
         // 获取第一帧
         byte[] img;
@@ -91,6 +105,13 @@ public class VideoUtil {
         }
     }
 
+
+    /**
+     * 截取视频帧 作为封面图
+     * @param file
+     * @return
+     * @throws IOException
+     */
     public static byte[] fetchFrame(MultipartFile file) throws IOException {
         InputStream inputStream = new ByteArrayInputStream(file.getBytes());
         FFmpegFrameGrabber ff = new FFmpegFrameGrabber(inputStream);

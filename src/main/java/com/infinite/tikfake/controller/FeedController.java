@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -19,12 +18,14 @@ import java.util.List;
 public class FeedController {
     @Autowired
     VideoService videoService;
+
     @GetMapping("/feed")
     @ApiOperation("获取视频流")
-    public AjaxResult Feed() {
-        List<Video> list = videoService.getVideoOrderByCreateTime();
-        AjaxResult ajax = AjaxResult.success();
-        ajax.put("next_time", new Date(System.currentTimeMillis()));
+    public AjaxResult feed(String latest_time, String token) {
+        AjaxResult ajax;
+        ajax = AjaxResult.success();
+        List<Video> list = videoService.getVideoOrderByCreateTime(latest_time);
+        ajax.put("next_time", list.size() != 0 ? list.get(0).getCreateTime() : null);
         ajax.put("video_list", list);
         return ajax;
     }

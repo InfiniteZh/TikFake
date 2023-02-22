@@ -45,9 +45,9 @@ public class FavoriteServiceImpl implements FavoriteService {
         List<Video> favoriteVideo = new ArrayList<>();
         for (Favorite f : favorite) {
             Integer video_id = f.getVideoId();
-            QueryWrapper<Video> Videowrapper = new QueryWrapper<>();
-            Videowrapper.eq("id", video_id);
-            favoriteVideo.add(videoMapper.selectOne(Videowrapper));
+            QueryWrapper<Video> Videographer = new QueryWrapper<>();
+            Videographer.eq("id", video_id);
+            favoriteVideo.add(videoMapper.selectOne(Videographer));
         }
         return favoriteVideo;
     }

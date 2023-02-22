@@ -12,6 +12,8 @@ public interface VideoService {
 
     Video getVideoByTitle(String title);
 
-    List<Video> getVideoOrderByCreateTime();
+    List<Video> getVideoOrderByCreateTime(String latest_time);
+
+    List<Video> getVideoByUser(Integer user_id);
 
 }

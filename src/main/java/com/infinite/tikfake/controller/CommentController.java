@@ -31,9 +31,6 @@ public class CommentController {
                         @RequestParam("action_type") Integer action_type,
                         @RequestParam("comment_text") String comment_text,
                         @RequestParam("comment_id") Integer comment_id){
-        if(!JwtUtil.verifyTokenOfUser(token)){
-            return AjaxResult.error("请先登录！");
-        }
         String username = JwtUtil.getUsername(token);
         User user = userService.getUserByName(username);
         String createDate = null;

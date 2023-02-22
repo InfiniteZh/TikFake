@@ -61,6 +61,16 @@ public class AjaxResult extends HashMap<String, Object> {
         return new AjaxResult(HttpStatus.SUCCESS, null);
     }
 
+    /**
+     *
+     * @param msg
+     * @return
+     */
+    public static AjaxResult success(String msg)
+    {
+        return new AjaxResult(HttpStatus.SUCCESS, msg);
+    }
+
 
     /**
      * 返回错误消息

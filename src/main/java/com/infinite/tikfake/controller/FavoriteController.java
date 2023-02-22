@@ -26,9 +26,6 @@ public class FavoriteController {
     AjaxResult favorite(@RequestParam("token") String token,
                         @RequestParam("videoId") Integer video_id,
                         @RequestParam("actionType") Integer action_type){
-        if(!JwtUtil.verifyTokenOfUser(token)){
-            return AjaxResult.error("请先登录！");
-        }
         String username = JwtUtil.getUsername(token);
         User user = userService.getUserByName(username);
         if(action_type == 1) {
@@ -42,9 +39,6 @@ public class FavoriteController {
     @GetMapping("/list")
     AjaxResult getFavoriteList(@RequestParam("user_id") Integer user_id,
                                @RequestParam("token") String token) {
-        if(!JwtUtil.verifyTokenOfUser(token)){
-            return AjaxResult.error("token error!");
-        }
         AjaxResult ajax = AjaxResult.success();
         ajax.put("video_list", favoriteService.getFavoriteList(user_id));
         return ajax;
