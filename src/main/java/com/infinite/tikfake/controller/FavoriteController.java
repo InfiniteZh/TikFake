@@ -4,13 +4,11 @@ import com.infinite.tikfake.common.AjaxResult;
 import com.infinite.tikfake.entity.User;
 import com.infinite.tikfake.service.FavoriteService;
 import com.infinite.tikfake.service.UserService;
+import com.infinite.tikfake.service.VideoService;
 import com.infinite.tikfake.utils.JwtUtil;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @Api("点赞Controller")
@@ -21,6 +19,8 @@ public class FavoriteController {
     FavoriteService favoriteService;
     @Autowired
     UserService userService;
+    @Autowired
+    VideoService videoService;
 
     @PostMapping("/action")
     AjaxResult favorite(@RequestParam("token") String token,
@@ -37,6 +37,16 @@ public class FavoriteController {
             favoriteService.notFavorite(user.getId(), video_id);
         }
         return AjaxResult.success();
+    }
 
+    @GetMapping("/list")
+    AjaxResult getFavoriteList(@RequestParam("user_id") Integer user_id,
+                               @RequestParam("token") String token) {
+        if(!JwtUtil.verifyTokenOfUser(token)){
+            return AjaxResult.error("token error!");
+        }
+        AjaxResult ajax = AjaxResult.success();
+        ajax.put("video_list", favoriteService.getFavoriteList(user_id));
+        return ajax;
     }
 }
