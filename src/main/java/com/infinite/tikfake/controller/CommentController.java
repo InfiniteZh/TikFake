@@ -45,7 +45,7 @@ public class CommentController {
         AjaxResult ajax = AjaxResult.success();
         ajax.put("id", comment_id);
         ajax.put("user", user);
-        ajax.put("cotent", comment_text);
+        ajax.put("content", comment_text);
         ajax.put("create_date", createDate);
         return ajax;
     }
