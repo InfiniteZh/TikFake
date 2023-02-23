@@ -16,4 +16,6 @@ public interface VideoService {
 
     List<Video> getVideoByUser(Integer user_id);
 
+    Video getVideoByVideoId(Integer videoId);
+
 }

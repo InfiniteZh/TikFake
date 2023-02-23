@@ -11,6 +11,7 @@ import com.infinite.tikfake.utils.VideoUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
@@ -32,6 +33,7 @@ public class VideoServiceImpl implements VideoService {
     private String domain;
 
     @Override
+    @Transactional
     public Video getVideoDemo() {
         Video video = videoMapper.selectById(1);
         User user = userService.getUserById(video.getUserId());
@@ -40,6 +42,7 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
+    @Transactional
     public void saveVideo(MultipartFile data,  String token, String title) {
         String keyVideo  = "video/" + title + ".mp4";
         String keyImg  = "cover/" + title + ".jpg";
@@ -53,6 +56,7 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
+    @Transactional
     public Video getVideoByTitle(String title) {
         QueryWrapper<Video> wrapper = new QueryWrapper<>();
         wrapper.eq("title", title);
@@ -60,6 +64,7 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
+    @Transactional
     public List<Video> getVideoOrderByCreateTime(String latest_time) {
         QueryWrapper<Video> wrapper = new QueryWrapper<>();
         wrapper.orderBy(true, false, "create_time");
@@ -75,10 +80,18 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
+    @Transactional
     public List<Video> getVideoByUser(Integer user_id) {
         QueryWrapper<Video> wrapper = new QueryWrapper<>();
         wrapper.eq("user_id", user_id);
         wrapper.last("limit 10");
         return videoMapper.selectList(wrapper);
+    }
+
+    @Override
+    public Video getVideoByVideoId(Integer videoId) {
+        QueryWrapper<Video> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id", videoId);
+        return videoMapper.selectOne(queryWrapper);
     }
 }

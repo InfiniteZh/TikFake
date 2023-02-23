@@ -2,7 +2,9 @@ package com.infinite.tikfake.utils;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ScanOptions;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -12,7 +14,6 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @Component
 public class RedisUtil {
-
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
@@ -21,7 +22,6 @@ public class RedisUtil {
     /**
      * 删除key
      *
-     * @param key
      */
     public void delete(String key) {
         log.info("delete(..) => key -> {}", key);
@@ -49,7 +49,7 @@ public class RedisUtil {
      * @return
      */
     public Boolean expire(String key, long timeout, TimeUnit unit) {
-        log.info("expire(..) => key -> {},timeout -> {},unit -> {}", key);
+        log.info("expire(..) => key -> {},timeout -> {},unit -> {}", key, timeout, unit);
         return redisTemplate.expire(key, timeout, unit);
     }
 
@@ -61,7 +61,7 @@ public class RedisUtil {
      * @return
      */
     public Boolean expireAt(String key, Date date) {
-        log.info("expireAt(..) => key -> {},date -> {}", key);
+        log.info("expireAt(..) => key -> {},date -> {}", key, date);
         return redisTemplate.expireAt(key, date);
     }
 
@@ -221,6 +221,17 @@ public class RedisUtil {
         redisTemplate.opsForHash().put(key, entryKey, entryValue);
     }
 
+    /**
+     * 向 key对应的 hash中，增加一个键值对 entryKey-entryValue
+     *
+     * @param key
+     * @param entryKey
+     * @param entryValue
+     */
+    public void hPut(String key, String entryKey, Integer entryValue) {
+        log.info("hPut(...) => key -> {}, entryKey -> {}, entryValue -> {}", key, entryKey, entryValue);
+        redisTemplate.opsForHash().put(key, entryKey, entryValue);
+    }
     /**
      * 向key对应的hash中，增加maps
      *
@@ -536,6 +547,9 @@ public class RedisUtil {
     /*------------Set相关操作---------------*/
     /*------------set中的元素，不可以重复。set是无序的。*/
 
+    public Cursor<Map.Entry<Object, Object>> scan(String key, ScanOptions options){
+        return redisTemplate.opsForHash().scan(key, options);
+    }
 
     /**
      * 向(key对应的)set中添加items

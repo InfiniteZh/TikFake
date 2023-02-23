@@ -11,4 +11,8 @@ public interface FavoriteService {
     void notFavorite(Integer userId, Integer videoId);
 
     List<Video> getFavoriteList(Integer userId);
+
+    void transFavoriteFromRedis2DB();
+    void transFavoriteCountFromRedis2DB();
+
 }

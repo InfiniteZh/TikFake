@@ -6,11 +6,13 @@ import com.infinite.tikfake.entity.Video;
 import com.infinite.tikfake.mapper.FavoriteMapper;
 import com.infinite.tikfake.mapper.VideoMapper;
 import com.infinite.tikfake.service.FavoriteService;
+import com.infinite.tikfake.service.RedisService;
+import com.infinite.tikfake.service.VideoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,22 +24,27 @@ public class FavoriteServiceImpl implements FavoriteService {
     @Autowired
     VideoMapper videoMapper;
 
+    @Autowired
+    VideoService videoService;
+    @Autowired
+    RedisService redisService;
+
     @Override
+    @Transactional
     public void favorite(Integer userId, Integer videoId) {
-        Favorite favorite = new Favorite(userId, videoId);
-        favoriteMapper.insert(favorite);
+        redisService.saveLikedRecord(userId, videoId);
+        redisService.incrLikedCount(videoId);
     }
 
     @Override
+    @Transactional
     public void notFavorite(Integer userId, Integer videoId) {
-        //根据map集合中所设置的条件删除用户信息
-        Map<String,Object> DeleteMap = new HashMap<>();
-        DeleteMap.put("user_id",userId);
-        DeleteMap.put("video_id",videoId);
-        favoriteMapper.deleteByMap(DeleteMap);
+        redisService.saveUnlikeRecord(userId, videoId);
+        redisService.decrLikedCount(videoId);
     }
 
     @Override
+    @Transactional
     public List<Video> getFavoriteList(Integer userId) {
         QueryWrapper<Favorite> wrapper = new QueryWrapper<>();
         wrapper.eq("user_id", userId);
@@ -51,4 +58,44 @@ public class FavoriteServiceImpl implements FavoriteService {
         }
         return favoriteVideo;
     }
+
+    public Favorite getByUserIdAndVideoId(Integer userId, Integer videoId){
+        QueryWrapper<Favorite> wrapper = new QueryWrapper<>();
+        wrapper.eq("user_id", userId);
+        wrapper.eq("video_id", videoId);
+        return favoriteMapper.selectOne(wrapper);
+    }
+    @Override
+    @Transactional
+    public void transFavoriteFromRedis2DB() {
+        List<Favorite> list = redisService.getLikedData();
+        for (Favorite favorite : list) {
+            Favorite ul = getByUserIdAndVideoId(favorite.getUserId(), favorite.getVideoId());
+            if (ul == null){
+                //没有记录，直接存入
+                favoriteMapper.insert(favorite);
+            }else{
+                //有记录，需要更新
+                ul.setStatus(favorite.getStatus());
+                favoriteMapper.updateById(ul);
+            }
+        }
+    }
+
+    @Override
+    @Transactional
+    public void transFavoriteCountFromRedis2DB() {
+        Map<String, Integer> map = redisService.getLikedCount();
+        for (String videoId : map.keySet()) {
+            Video video = videoService.getVideoByVideoId(Integer.parseInt(videoId));
+            //点赞数量属于无关紧要的操作，出错无需抛异常
+            if (video != null){
+                Integer likeNum = video.getFavoriteCount() + map.get(videoId);
+                video.setFavoriteCount(likeNum);
+                //更新点赞数量
+                videoMapper.updateById(video);
+            }
+        }
+    }
+
 }

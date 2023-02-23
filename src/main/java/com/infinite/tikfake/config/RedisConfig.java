@@ -19,15 +19,14 @@ public class RedisConfig {
     // 默认情况下的模板只能支持 RedisTemplate<String,String>，
     // 只能存入字符串，很多时候，我们需要自定义 RedisTemplate ，设置序列化器
     public RedisTemplate<String,Object> redisTemplate(RedisConnectionFactory factory){
-        RedisTemplate<String,Object> template = new RedisTemplate <>();
-        template.setConnectionFactory(factory);
-
         Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
         ObjectMapper om = new ObjectMapper();
         om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
         jackson2JsonRedisSerializer.setObjectMapper(om);
 
+        RedisTemplate<String,Object> template = new RedisTemplate <>();
+        template.setConnectionFactory(factory);
         StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
         // key采用String的序列化方式
         template.setKeySerializer(stringRedisSerializer);

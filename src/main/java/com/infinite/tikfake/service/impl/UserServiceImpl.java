@@ -8,6 +8,7 @@ import com.infinite.tikfake.service.UserService;
 import com.infinite.tikfake.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
 @Service
@@ -16,6 +17,7 @@ public class UserServiceImpl implements UserService {
     UserMapper userMapper;
 
     @Override
+    @Transactional
     public User getUserByName(String name) {
         QueryWrapper<User> wrapper = new QueryWrapper<>();
         wrapper.eq("name", name);
@@ -23,11 +25,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public User getUserById(Integer id) {
         return userMapper.selectById(id);
     }
 
     @Override
+    @Transactional
     public void save(User user) {
         String md5Hash = DigestUtils.md5DigestAsHex(user.getPassword().getBytes());
         user.setPassword(md5Hash);
