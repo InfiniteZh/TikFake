@@ -4,9 +4,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.infinite.tikfake.entity.User;
 import com.infinite.tikfake.entity.Video;
 import com.infinite.tikfake.mapper.VideoMapper;
+import com.infinite.tikfake.service.RedisService;
 import com.infinite.tikfake.service.UserService;
 import com.infinite.tikfake.service.VideoService;
 import com.infinite.tikfake.utils.JwtUtil;
+import com.infinite.tikfake.utils.RedisUtil;
 import com.infinite.tikfake.utils.VideoUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,6 +30,8 @@ public class VideoServiceImpl implements VideoService {
 
     @Autowired
     VideoUtil videoUtil;
+    @Autowired
+    RedisService redisService;
 
     @Value("${qiniu.domain}")
     private String domain;
@@ -75,6 +79,8 @@ public class VideoServiceImpl implements VideoService {
         for(Video video : videos){
             video.setPlayUrl(videoUtil.getQiniuURL(video.getPlayUrl()));
             video.setCoverUrl(videoUtil.getQiniuURL(video.getCoverUrl()));
+            video.setFavoriteCount(video.getFavoriteCount() + redisService.getLikedCountByVideoId(video.getId()));
+            video.setCommentCount(video.getCommentCount() + redisService.getCommentCountByVideoId(video.getId()));
         }
         return videos;
     }

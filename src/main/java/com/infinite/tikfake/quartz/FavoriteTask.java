@@ -1,5 +1,6 @@
 package com.infinite.tikfake.quartz;
 
+import com.infinite.tikfake.service.CommentService;
 import com.infinite.tikfake.service.FavoriteService;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.JobExecutionContext;
@@ -17,6 +18,8 @@ public class FavoriteTask extends QuartzJobBean {
 
     @Autowired
     FavoriteService favoriteService;
+    @Autowired
+    CommentService commentService;
 
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -28,5 +31,6 @@ public class FavoriteTask extends QuartzJobBean {
         //将 Redis 里的点赞信息同步到数据库里
         favoriteService.transFavoriteFromRedis2DB();
         favoriteService.transFavoriteCountFromRedis2DB();
+        commentService.transCommentCountFromRedis2DB();
     }
 }

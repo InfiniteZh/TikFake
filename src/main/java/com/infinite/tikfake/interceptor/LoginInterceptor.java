@@ -12,7 +12,7 @@ import java.io.PrintWriter;
 @Slf4j
 public class LoginInterceptor implements HandlerInterceptor {
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         String token = request.getParameter("token");
         if(JwtUtil.verifyTokenOfUser(token)){
             return true;

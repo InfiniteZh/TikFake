@@ -1,10 +1,18 @@
 package com.infinite.tikfake.service;
 
 
+import com.infinite.tikfake.entity.Comment;
+import com.infinite.tikfake.entity.User;
+
+import java.util.List;
 
 public interface CommentService {
 
-    String postComment(Integer videoId, String commentText);
+    Comment postComment(Integer videoId, String commentText, User user);
 
-    String deleteComment(Integer commentId);
+    void deleteComment(Integer commentId);
+
+    void transCommentCountFromRedis2DB();
+
+    List<Comment> getCommentByVideoId(Integer videoId);
 }

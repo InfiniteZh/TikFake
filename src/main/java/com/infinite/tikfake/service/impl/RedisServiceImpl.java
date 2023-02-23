@@ -46,6 +46,16 @@ public class RedisServiceImpl implements RedisService {
     }
 
     @Override
+    public void decrCommentCount(Integer commentId) {
+        redisUtil.hIncrBy(RedisCom.MAP_KEY_COMMENT_COUNT, String.valueOf(commentId), -1);
+    }
+
+    @Override
+    public void incrCommentCount(Integer commentId) {
+        redisUtil.hIncrBy(RedisCom.MAP_KEY_COMMENT_COUNT, String.valueOf(commentId), 1);
+    }
+
+    @Override
     public List<Favorite> getLikedData() {
         Cursor<Map.Entry<Object, Object>> cursor = redisUtil.scan(RedisCom.MAP_KEY_USER_LIKED, ScanOptions.NONE);
         List<Favorite> list = new ArrayList<>();
@@ -81,5 +91,33 @@ public class RedisServiceImpl implements RedisService {
         return res;
     }
 
+    @Override
+    public Map<String, Integer> getCommentCount() {
+        Cursor<Map.Entry<Object, Object>> cursor = redisUtil.scan(RedisCom.MAP_KEY_COMMENT_COUNT, ScanOptions.NONE);
+        Map<String, Integer> res = new HashMap<>();
+        while(cursor.hasNext()){
+            Map.Entry<Object, Object> map = cursor.next();
+            String key = (String)map.getKey();
+            Integer val = (Integer) map.getValue();
+            res.put(key, val);
+            redisUtil.hDelete(RedisCom.MAP_KEY_COMMENT_COUNT, key);
+        }
+        return res;
+    }
 
+    @Override
+    public Integer getLikedCountByVideoId(Integer videoId) {
+        if(!redisUtil.hExists(RedisCom.MAP_KEY_USER_LIKED_COUNT, String.valueOf(videoId))){
+            return 0;
+        }
+        return (Integer) redisUtil.hGet(RedisCom.MAP_KEY_USER_LIKED_COUNT, String.valueOf(videoId));
+    }
+
+    @Override
+    public Integer getCommentCountByVideoId(Integer videoId) {
+        if(!redisUtil.hExists(RedisCom.MAP_KEY_COMMENT_COUNT, String.valueOf(videoId))){
+            return 0;
+        }
+        return (Integer) redisUtil.hGet(RedisCom.MAP_KEY_COMMENT_COUNT, String.valueOf(videoId));
+    }
 }

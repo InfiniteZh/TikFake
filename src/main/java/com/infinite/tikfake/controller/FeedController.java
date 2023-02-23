@@ -24,7 +24,7 @@ public class FeedController {
     public AjaxResult feed(String latest_time, String token) {
         AjaxResult ajax;
         ajax = AjaxResult.success();
-        List<Video> list = videoService.getVideoOrderByCreateTime(latest_time);
+        List<Video> list = videoService.getVideoOrderByCreateTime(null);
         ajax.put("next_time", list.size() != 0 ? list.get(0).getCreateTime() : null);
         ajax.put("video_list", list);
         return ajax;

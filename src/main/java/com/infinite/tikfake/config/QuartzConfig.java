@@ -5,6 +5,9 @@ import org.quartz.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ *  配置Quartz （定时任务，用于定时从redis向mysql传输数据）
+ */
 @Configuration
 public class QuartzConfig {
     private static final String LIKE_TASK_IDENTITY = "LikeTaskQuartz";
@@ -18,7 +21,7 @@ public class QuartzConfig {
     public Trigger quartzTrigger(){
         SimpleScheduleBuilder scheduleBuilder = SimpleScheduleBuilder.simpleSchedule()
 //                .withIntervalInSeconds(10)  //设置时间周期单位秒
-                .withIntervalInSeconds(20) //两个小时执行一次
+                .withIntervalInMinutes(10) //两个小时执行一次
                 .repeatForever();
         return TriggerBuilder.newTrigger().forJob(quartzDetail())
                 .withIdentity(LIKE_TASK_IDENTITY)

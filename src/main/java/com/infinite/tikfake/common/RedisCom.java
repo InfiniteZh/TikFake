@@ -5,6 +5,7 @@ public class RedisCom {
     public static final String MAP_KEY_USER_LIKED = "MAP_USER_LIKED";
     //保存用户被点赞数量的key
     public static final String MAP_KEY_USER_LIKED_COUNT = "MAP_USER_LIKED_COUNT";
+    public static final String MAP_KEY_COMMENT_COUNT = "MAP_KEY_COMMENT_COUNT";
 
     public static final Integer LIKE = 1;
     public static final Integer UNLIKE = 0;

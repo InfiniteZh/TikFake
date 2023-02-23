@@ -13,10 +13,19 @@ public interface RedisService {
     void deleteLikedRecord(Integer userId, Integer videoId);
 
     void incrLikedCount(Integer videoId);
+    void incrCommentCount(Integer commentId);
 
     void decrLikedCount(Integer videoId);
+
+    void decrCommentCount(Integer commentId);
 
     List<Favorite> getLikedData();
 
     Map<String, Integer> getLikedCount();
+    Map<String, Integer> getCommentCount();
+
+    Integer getLikedCountByVideoId(Integer videoId);
+
+    Integer getCommentCountByVideoId(Integer videoId);
+
 }

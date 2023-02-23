@@ -18,3 +18,7 @@
 ## 2-22
 1. 加入拦截器，拦截token并进行处理
 2. 修正/douyin/feed 加入latest_time参数
+
+## 2-23
+1. 加入redis去处理点赞操作，并且使用Quartz去定时发送给mysql存储
+2. Comment功能实现
