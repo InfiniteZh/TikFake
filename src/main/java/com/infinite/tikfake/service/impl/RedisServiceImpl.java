@@ -46,13 +46,13 @@ public class RedisServiceImpl implements RedisService {
     }
 
     @Override
-    public void decrCommentCount(Integer commentId) {
-        redisUtil.hIncrBy(RedisCom.MAP_KEY_COMMENT_COUNT, String.valueOf(commentId), -1);
+    public void decrCommentCount(Integer videoId) {
+        redisUtil.hIncrBy(RedisCom.MAP_KEY_COMMENT_COUNT, String.valueOf(videoId), -1);
     }
 
     @Override
-    public void incrCommentCount(Integer commentId) {
-        redisUtil.hIncrBy(RedisCom.MAP_KEY_COMMENT_COUNT, String.valueOf(commentId), 1);
+    public void incrCommentCount(Integer videoId) {
+        redisUtil.hIncrBy(RedisCom.MAP_KEY_COMMENT_COUNT, String.valueOf(videoId), 1);
     }
 
     @Override

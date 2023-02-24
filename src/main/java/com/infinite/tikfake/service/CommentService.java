@@ -10,7 +10,7 @@ public interface CommentService {
 
     Comment postComment(Integer videoId, String commentText, User user);
 
-    void deleteComment(Integer commentId);
+    void deleteComment(Integer videoId, Integer commentId);
 
     void transCommentCountFromRedis2DB();
 

@@ -59,6 +59,14 @@ public class FavoriteServiceImpl implements FavoriteService {
         return favoriteVideo;
     }
 
+    @Override
+    public Boolean isFavoriteByUserIdAndVideoId(Integer userId, Integer videoId) {
+        QueryWrapper<Favorite> wrapper = new QueryWrapper<>();
+        wrapper.eq("user_id", userId);
+        wrapper.eq("video_id", videoId);
+        return favoriteMapper.selectOne(wrapper).getStatus() == 1;
+    }
+
     public Favorite getByUserIdAndVideoId(Integer userId, Integer videoId){
         QueryWrapper<Favorite> wrapper = new QueryWrapper<>();
         wrapper.eq("user_id", userId);

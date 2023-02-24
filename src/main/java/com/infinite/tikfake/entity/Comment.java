@@ -16,21 +16,21 @@ import java.util.Date;
 @TableName(excludeProperty = "user")
 public class Comment {
 
-    @TableId("comment_id")
-    private Integer commentId;
+    private Integer id;
+    @JsonIgnore
     private Integer videoId;
     @JsonIgnore
     private Integer userId;
     private User user;
-    private String commentText;
+    private String content;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date createTime;
+    private Date createDate;
 
-    public Comment(Integer videoId, Integer userId, String commentText, User user, Date createTime) {
+    public Comment(Integer videoId, Integer userId, String commentText, User user, Date createDate) {
         this.videoId = videoId;
         this.userId = userId;
-        this.commentText = commentText;
+        this.content = commentText;
         this.user = user;
-        this.createTime = createTime;
+        this.createDate = createDate;
     }
 }

@@ -24,8 +24,8 @@ public class FavoriteController {
 
     @PostMapping("/action")
     AjaxResult favorite(@RequestParam("token") String token,
-                        @RequestParam("videoId") Integer video_id,
-                        @RequestParam("actionType") Integer action_type){
+                        @RequestParam("video_id") Integer video_id,
+                        @RequestParam("action_type") Integer action_type){
         String username = JwtUtil.getUsername(token);
         User user = userService.getUserByName(username);
         if(action_type == 1) {

@@ -38,7 +38,7 @@ public class CommentController {
         if (action_type == 1) {
             comment = commentService.postComment(video_id, comment_text, user);
         } else if (action_type == 2) {
-            commentService.deleteComment(comment_id);
+            commentService.deleteComment(video_id, comment_id);
             return AjaxResult.success();
         }
         AjaxResult ajax = AjaxResult.success();

@@ -40,26 +40,26 @@ public class CommentServiceImpl implements CommentService {
     public Comment postComment(Integer videoId, String commentText, User user) {
         Comment comment = new Comment(videoId, user.getId(), commentText, user, new Date(System.currentTimeMillis()));
         commentMapper.insert(comment);
-        redisService.incrCommentCount(comment.getCommentId());
+        redisService.incrCommentCount(videoId);
         return comment;
     }
 
     @Override
     @Transactional
-    public void deleteComment(Integer commentId) {
+    public void deleteComment(Integer videoId, Integer commentId) {
         commentMapper.deleteById(commentId);
-        redisService.decrCommentCount(commentId);
+        redisService.decrCommentCount(videoId);
     }
 
     @Override
     public void transCommentCountFromRedis2DB() {
         Map<String, Integer> map = redisService.getCommentCount();
-        for (String commentId : map.keySet()) {
-            Video video = videoService.getVideoByVideoId(Integer.parseInt(commentId));
+        for (String videoId : map.keySet()) {
+            Video video = videoService.getVideoByVideoId(Integer.parseInt(videoId));
             //点赞数量属于无关紧要的操作，出错无需抛异常
             if (video != null){
-                Integer likeNum = video.getCommentCount() + map.get(commentId);
-                video.setFavoriteCount(likeNum);
+                Integer likeNum = video.getCommentCount() + map.get(videoId);
+                video.setCommentCount(likeNum);
                 //更新点赞数量
                 videoMapper.updateById(video);
             }

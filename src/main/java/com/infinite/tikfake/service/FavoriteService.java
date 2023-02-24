@@ -12,6 +12,8 @@ public interface FavoriteService {
 
     List<Video> getFavoriteList(Integer userId);
 
+    Boolean isFavoriteByUserIdAndVideoId(Integer videoId, Integer userId);
+
     void transFavoriteFromRedis2DB();
     void transFavoriteCountFromRedis2DB();
 
